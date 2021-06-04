@@ -30,7 +30,7 @@ public class ClientHandler implements Runnable{
 		        	out.println("Type 'tell me a name' to get a random name");
 		        }
 		        System.out.println("Client Input #" + clients.indexOf(this)+": "+request);
-		        //adding (this) is the smartest line of code i've written in a month
+		        //adding (this) made my brain explode. get it? no? k
 		        	
 	        }
         }catch(IOException e) {
