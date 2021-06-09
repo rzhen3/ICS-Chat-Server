@@ -131,6 +131,8 @@ public class MainInterface extends javax.swing.JFrame {
     private void joinRoomActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_joinRoomActionPerformed
         // TODO add your handling code here:
         String code= joinCode.getText();
+        String ipAddress = code.substring(0, 8);
+        String port = code.substring(10, 13);
         
     }//GEN-LAST:event_joinRoomActionPerformed
 
