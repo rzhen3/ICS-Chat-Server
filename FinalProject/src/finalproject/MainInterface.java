@@ -1,9 +1,6 @@
-/*
- * To change this license header, choose License Headers in Project Properties.
- * To change this template file, choose Tools | Templates
- * and open the template in the editor.
- */
-package pkgfinal.project;
+package finalproject;
+
+import java.io.IOException;
 
 /**
  *
@@ -12,11 +9,19 @@ package pkgfinal.project;
 public class MainInterface extends javax.swing.JFrame {
     
 
-    /**
-     * Creates new form MainInterface
-     */
+    public static String code;
+    public static int[] cipher;
     public MainInterface() {
         initComponents();
+        
+        //initialize the code using localhost data and modified using pseudorandom cipher
+        code = "";
+        char[] temp = ("127.0.0.1"+"-"+String.valueOf(9999)).toCharArray();
+        cipher = new int[25];
+        for(int i = 0;i<temp.length;i++){
+            cipher[i] = (int)(Math.random()*26)+1;
+            code +=(char)(temp[i]+cipher[i]);
+        }
     }
 
     /**
@@ -130,28 +135,31 @@ public class MainInterface extends javax.swing.JFrame {
         pack();
     }// </editor-fold>//GEN-END:initComponents
 
-    private void joinCodeActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_joinCodeActionPerformed
-        // TODO add your handling code here:
-    }//GEN-LAST:event_joinCodeActionPerformed
+    private void joinCodeActionPerformed(java.awt.event.ActionEvent evt) {
+        // I have no clue what this does but im too scared to remove it
+   }
 
-    private void joinRoomActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_joinRoomActionPerformed
-        // TODO add your handling code here:
-        String code= joinCode.getText();
-        String ipAddress = code.substring(0, 8);
-        String port = code.substring(10, 13);
-        
-    }//GEN-LAST:event_joinRoomActionPerformed
+    //getting code from text box and connecting client via standard join with new thread
+    private void joinRoomActionPerformed(java.awt.event.ActionEvent evt) {
+        try{
+            String code= joinCode.getText();
+            new Thread(new Client(code)).start();
+        }catch(StringIndexOutOfBoundsException e){
+            System.err.println("[ERROR] Invalid code entered");
+        }catch(ArrayIndexOutOfBoundsException ee){
+            System.err.println("[ERROR] Invalid code entered");
+        }catch(NumberFormatException eee){
+            System.err.println("[ERROR] Invalid code entered");
+        }
+    }
 
-    private void hostRoomActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_hostRoomActionPerformed
-        // TODO add your handling code here:
-        messagingScreen ms = new messagingScreen();
-        ms.setVisible(true);
-        
-    }//GEN-LAST:event_hostRoomActionPerformed
+    //start a server and connecting client via direct join with new thread
+    private void hostRoomActionPerformed(java.awt.event.ActionEvent evt) {
+        new Thread(new Server(code, cipher)).start();
+        new Thread(new Client(Server.getIP(), String.valueOf(Server.getPORT()))).start();
+    }
 
-    /**
-     * @param args the command line arguments
-     */
+
     public static void main(String args[]) {
         /* Set the Nimbus look and feel */
         //<editor-fold defaultstate="collapsed" desc=" Look and feel setting code (optional) ">
